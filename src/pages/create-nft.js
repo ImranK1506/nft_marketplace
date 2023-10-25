@@ -6,9 +6,12 @@ import { useTheme } from 'next-themes';
 
 import { Button } from '../components';
 import images from '../../assets';
+import { Input } from '../components';
 
 const CreateNft = () => {
   const [fileUrl, setFileUrl] = useState(null);
+  const [formInput, setFormInput] = useState({ price: '', name: '', description: '' });
+
   const { theme } = useTheme();
 
   const onDrop = useCallback(() => {
@@ -39,7 +42,7 @@ const CreateNft = () => {
   return (
     <div className="flex justify-center sm:px-4 p-12">
       <div className="w-3/5 md:w-full">
-        <h1 className="font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold ml-4 xs:ml-0">Create NFT</h1>
+        <h1 className="font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl font-semibold ml-0 xs:ml-0">Create NFT</h1>
         <div className="mt-16">
           <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">Upload file</p>
           <div className="mt-4">
@@ -75,6 +78,32 @@ const CreateNft = () => {
               </asside>
             )}
           </div>
+        </div>
+        {/* Input */}
+        <Input
+          inputType="input"
+          title="Name"
+          placeholder="NFT Name"
+          handleClick={(e) => setFormInput({ ...formInput, name: e.target.value })}
+        />
+        <Input
+          inputType="textarea"
+          title="Description"
+          placeholder="NFT Description"
+          handleClick={(e) => setFormInput({ ...formInput, description: e.target.value })}
+        />
+        <Input
+          inputType="number"
+          title="Price"
+          placeholder="NFT Price"
+          handleClick={() => {}}
+        />
+        <div className="mt-7 w-full flex justify-end">
+          <Button
+            btnName="Create NFT"
+            className="rounded-xl"
+            handleClick={(e) => setFormInput({ ...formInput, price: e.target.value })}
+          />
         </div>
       </div>
     </div>
