@@ -13,8 +13,8 @@
     "@nomiclabs/hardhat-waffle": "2.0.3",
     "@openzeppelin/contracts": "4.9.3",
     "axios": "0.26.0",
-    "ethers": "5.5.4",
-    "hardhat": "2.18.2",
+    "ethers": "^6.4.0",
+    "hardhat": "^2.14.0",
     "ipfs-http-client": "56.0.1",
     "next": "13.5.6",
     "next-themes": "0.1.1",
@@ -24,7 +24,15 @@
     "web3modal": "1.9.5"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.0",
+    "@nomicfoundation/hardhat-ethers": "^3.0.0",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^1.0.0",
+    "@typechain/ethers-v6": "^0.4.0",
+    "@typechain/hardhat": "^8.0.0",
     "autoprefixer": "^10.4.2",
+    "chai": "^4.2.0",
     "eslint": "^8.10.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-next": "12.1.0",
@@ -32,7 +40,10 @@
     "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.29.3",
     "eslint-plugin-react-hooks": "^4.3.0",
+    "hardhat-gas-reporter": "^1.0.8",
     "postcss": "^8.4.7",
-    "tailwindcss": "^3.0.23"
+    "solidity-coverage": "^0.8.0",
+    "tailwindcss": "^3.0.23",
+    "typechain": "^8.1.0"
   }
 }
