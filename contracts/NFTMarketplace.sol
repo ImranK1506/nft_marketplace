@@ -40,4 +40,83 @@ contract NFTMarketplace is ERC721URIStorage {
     // Contract deployer
         owner = payable(msg.sender);
     }
+
+    /**
+     * @param public: callable from outside of the FE application
+     * @param payable: give access to the function to receive ethereum
+    */
+    function updateListingPrice(uint _listingPrice) public payable {
+        require(owner == msg.sender, "Only the marketplace owner can update the listing price.");
+
+        listingPrice = _listingPrice;
+    }
+
+    /**
+     * @param: view: function only returns something
+    */
+    function getListingPrice() public view returns (uint256) {
+        return listingPrice;
+    }
+
+    function createToken(string memory tokenURI, uint256 price) public payable returns (uint) {
+        _tokenIds.increment();
+
+        uint256 newTokenId = _tokenIds.current();
+
+        _mint(msg.sender, newTokenId);
+        _setTokenURI(newTokenId, tokenURI);
+
+        createMarketItem(newTokenId, price);
+
+        return newTokenId;
+    }
+
+    function createMarketItem(uint256 tokenId, uint256 price) private {
+        require(price > 0, "Price must be at least 1.");
+        require(msg.value == listingPrice, "Price must be equal to listing price.");
+
+        idToMarketItem[tokenId] = MarketItem(
+            tokenId,
+            payable(msg.sender),
+            payable(address(this)),
+            price,
+            false
+        );
+
+        _transfer(msg.sender, address(this), tokenId);
+
+        emit MarketItemCreated(tokenId, msg.sender, address(this), price, false);
+    }
+
+    function resellToken(uint256 tokenId, uint256 price) public payable {
+        require(idToMarketItem[tokenId].owner == msg.sender, "Only item owner can perform this operation");
+        require(msg.value == listingPrice, "Price must be equal to listing price.");
+
+        idToMarketItem[tokenId].sold = false;
+        idToMarketItem[tokenId].price = price;
+        idToMarketItem[tokenId].seller = payable(msg.sender);
+        idToMarketItem[tokenId].owner = payable(address(this));
+
+        _itemsSold.decrement();
+
+        _transfer(msg.sender, address(this), tokenId);
+    }
+
+    function createMarketSale(uint256 tokenId) public payable {
+        uint price = idToMarketItem[tokenId].price;
+
+        require(msg.value == price, "Please submit the asking price in order to complete the purchase.");
+
+        idToMarketItem[tokenId].owner = payable(msg.sender);
+        idToMarketItem[tokenId].sold = true;
+        idToMarketItem[tokenId].seller = payable(address(0));
+
+        _itemsSold.increment();
+
+        // transfer nft from the marketplace to the buyer
+        _transfer(address(this), msg.sender, tokenId);
+
+        payable(owner).transfer(listingPrice);
+        payable(idToMarketItem[tokenId].seller).transfer(msg.value);
+    }
 }
