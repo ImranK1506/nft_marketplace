@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // Web3 / Ethereum provider solution for all wallets
-import Web3Modal from 'web3modal';
 // Ethereum wallet implementation
-import { ethers } from 'ethers';
-import axios from 'axios';
 import { create as ipfsHttpClient } from 'ipfs-http-client';
 
-import { MartketAddress, MarketAddressABI } from './constants';
-
-const client = ipfsHttpClient('https://ipfs.infura.io:5001/api/v0');
+// const infuraKey = '2XzXKmur7a3wYRhaiUveZwblIG8';
+// const projectSecret = 'e3de6eb467089c1f4200fa54adc79072';
+const auth = `Basic ${Buffer.from(`${process.env.INFURA_KEY}:${process.env.INFURA_SECRET}`).toString('base64')}`;
+console.log(auth);
+const client = ipfsHttpClient(
+  {
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    apiPath: '/api/v0',
+    headers: {
+      authorization: auth,
+    },
+  },
+);
 
 export const NFTContext = React.createContext();
 
@@ -46,9 +55,7 @@ export const NFTProvider = ({ children }) => {
     try {
       const added = await client.add({ content: file });
 
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-
-      return url;
+      return `https://jsmastery-nft-marketplace.infura-ipfs.io/ipfs/${added.path}`;
     } catch (error) {
       console.log('Error uploading file');
     }
