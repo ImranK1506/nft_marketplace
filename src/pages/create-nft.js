@@ -11,8 +11,9 @@ import { Input } from '../components';
 
 const CreateNft = () => {
   const [fileUrl, setFileUrl] = useState(null);
-  const [formInput, setFormInput] = useState({ price: '', name: '', description: '' });
-  const { uploadToIPFS } = useContext(NFTContext);
+  const [formInput, setFormInput] = useState({ price: '0.25', name: '', description: '' });
+  const { uploadToIPFS, createNFT } = useContext(NFTContext);
+  const router = useRouter();
 
   const { theme } = useTheme();
 
@@ -107,8 +108,7 @@ const CreateNft = () => {
         <div className="mt-7 w-full flex justify-end">
           <Button
             btnName="Create NFT"
-            className="rounded-xl"
-            handleClick={(e) => setFormInput({ ...formInput, price: e.target.value })}
+            handleClick={() => createNFT(formInput, fileUrl, router)}
           />
         </div>
       </div>

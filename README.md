@@ -16,8 +16,6 @@ npx hardhat run scripts/deploy.js
 
 ## Metamask
 
-Setup Metamask through localhost:8545
-
 * Add new network
 * Network Name: Localhost
 * New RPC URL: http://localhost:8545
@@ -25,8 +23,6 @@ Setup Metamask through localhost:8545
 * Currency symbol: ETH
 
 ## Infura
-
-Setup Infura
 
 * Create new API key
 * Select IPFS
@@ -59,3 +55,31 @@ const ipfs = createClient({
   },
 });
 ```
+
+## Store API keys
+
+Create an .env file to store api keys and secret keys. Next.js comes with built-in support for environment variables.
+
+Example:
+
+```javascript
+// .env
+API_KEY=abcd
+SECRET_KEY=efgh
+```
+
+```javascript
+// index.js
+export async function getStaticProps() {
+  const db = await myDB.connect({
+    key: process.env.API_KEY,
+    secret: process.env.SECRET_KEY,
+  })
+  // ...
+}
+```
+
+## Ether v5 vs v6 (I'm using v6)
+
+Read about the differences here: https://docs.ethers.org/v6/migrating/#migrate-utils
+
