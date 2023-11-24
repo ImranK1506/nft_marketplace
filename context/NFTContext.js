@@ -45,7 +45,8 @@ export const NFTProvider = ({ children }) => {
     // Establish connection to wallet
     const connection = await web3Modal.connect();
     // Get provider
-    const provider = new ethers.BrowserProvider(window.ethereum);
+    // const provider = new ethers.BrowserProvider(window.ethereum);
+    const provider = new ethers.BrowserProvider(connection);
     // Get signer (who is making the sale/nft)
     const signer = provider.getSigner();
     // Get contract instance v5
@@ -56,11 +57,12 @@ export const NFTProvider = ({ children }) => {
     const nftContract = fetchContract(signer);
     console.log('NFT Contract', nftContract);
     // Get listing price
-    const listingPrice = await nftContract.getListingPrice();
-    console.log('Listing price', listingPrice.toString());
+    // TODO fix listing price; it's not working
+    const listingPrice = await nftContract.methods.getListingPrice();
+    console.log('Listing price', listingPrice);
     // Create token
     const transaction = await nftContract.createToken(url, price, { value: listingPrice.toString() });
-
+    console.log('Transaction', transaction);
     await transaction.wait();
   };
 
@@ -112,6 +114,10 @@ export const NFTProvider = ({ children }) => {
 
   const createNFT = async (formInput, fileUrl, router) => {
     const { name, description, price } = formInput;
+
+    console.log('name', name);
+    console.log('description', description);
+    console.log('price', price);
 
     if (!name || !description || !price || !fileUrl) return;
 

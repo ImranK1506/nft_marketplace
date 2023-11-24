@@ -79,6 +79,8 @@ export async function getStaticProps() {
 }
 ```
 
+Learn [more](https://nextjs.org/docs/pages/building-your-application/configuring/environment-variables).
+
 ## Ether v5 vs v6 (I'm using v6)
 
 Read about the differences here: https://docs.ethers.org/v6/migrating/#migrate-utils
